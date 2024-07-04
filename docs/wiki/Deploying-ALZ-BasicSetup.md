@@ -8,10 +8,7 @@ Please refer to [Trey Research reference implementation](https://github.com/Azur
 
 ## 1. Pre-requisites
 
-### Required Permissions
-
-To provision Azure landing zone portal accelerator in your environment, **your user/service principal must have Owner permission at the Azure Active Directory Tenant root**.
-Refer to these [instructions](./Deploying-Enterprise-Scale-Pre-requisites) on how to grant access before you proceed.
+There are a number of prerequisites which need to be met before you can provision an Azure landing zones environment via the deployment experience in the Azure portal. See the following [instructions](./Deploying-ALZ-Pre-requisites.md) on how to grant access before you proceed.
 
 ### Subscriptions
 
@@ -49,12 +46,17 @@ On the *Azure Core setup* blade you will:
 
 - **Provide a prefix** that will be used to name your management group hierarchy **and** platform resources.
 - Choose between using dedicated subscriptions or a single subscription to host platform resources.
+- Choose between deploying in a single region, or in two regions.
 
 **Please Note:** A dedicated platform subscriptions is in general recommended. However, some Customers have the requirement to host their platform and applications within a single subscription. This tutorial is aimed at Customers with this requirement.
 
   Select **Single** and **provide a dedicated (empty) subscription** that will be used to host your Platform resources.
 
   ![ESLZ-Company-Prefix](./media/ESLZ-Company-Prefix-singlesubscription.jpg)
+
+Next, select if you wish to **Deploy in a secondary region**.  If this is left as *Yes*, then you will receive additional inputs later in the process to deploy resources in a secondary region.
+
+![ALZ-Secondary-Region](./media/ALZ-secondaryregion-singlesubscription.jpg)
 
 Click **Next: Platform management, security, and governance>**.
 
@@ -74,7 +76,6 @@ On the *Platform management, security, and governance* blade, you will:
 
 - Enable **Deploy Log Analytics workspace and enable monitoring for your platform and resources** to get a central [Log Analytics Workspace](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces) and an [Automation Account deployed](https://learn.microsoft.com/en-us/azure/automation/automation-intro) deployed, and a set of [Azure Policies](https://github.com/Azure/Enterprise-Scale/blob/main/docs/ESLZ-Policies.md) applied at the root of the Azure landing zone Management Group hierarchy to make sure Activity Logs from all your Subscriptions, and Diagnostic Logs from all your VMs and PaaS resources are sent to Log Analytics.
 
-  ![mgmtTab-enableLogs](./media/clip_image014-1-singlesubscription.jpg)
 
   - If required you can customize the retention time of your monitoring data from it's default of 30 days by using the **Log Analytics Data Retention (days)** slider.
 **Please note:** Increasing the retention time to more than 30 days will increase your costs.
@@ -113,19 +114,11 @@ Click **Next: Platform Devops and Automation>** to configure how your Azure envi
 
 ![mgmtTab-next](./media/clip_image014asc-4-singlesubscription.jpg)
 
-## 6. Platform DevOps and Automation
+## 6. Baseline alerts and monitoring
 
-Azure landing zone portal accelerator provides an integrated CI/CD pipeline via [AzOps](https://github.com/Azure/AzOps) that can be used with GitHub Actions. The *Platform Devops and Automation* tab allows you to bootstrap your CI/CD pipeline including your Azure landing zone deployment settings. For detailed steps for setting up this configuration, refer to the [Deploy Azure landing zone portal accelerator Platform DevOps and Automation](./Deploying-ALZ-Platform-DevOps) article.
+On the *Baseline alerts and monitoring* blade, you can configure automated alert configuration for the different scopes in your Azure landing zone implementation. Enabling the different baseline alerts will assign the relevant initiative to the corresponding management group. If you enable the "Deploy one or more Azure Monitor Baseline Alerts" option, you **must**  provide an email address to get email notifications from Azure Monitor for the deployment to proceed.
 
-**In this tutorial, your Azure landing zone deployment will be triggered using the Azure Portal experience**.
-
-Set **Deploy integrated CICD pipeline** to **No**.
-
-![iacTab-next](./media/clip_image-iac-1-singlesubscription.jpg)
-
-Click **Next: Network topology and connectivity>** to proceed with configuring your network setup.
-
-![iacTab-next](./media/clip_image-iac-2-singlesubscription.jpg)
+![baseline alerts and monitoring](./media/alz-portal-baselinealerts.jpg)
 
 ## 7. Network topology and connectivity
 
@@ -160,13 +153,15 @@ On the *Network topology and connectivity* blade you will configure your core ne
 
   Set **Deploy VPN Gateway** to **Yes**:
   
-  ![networkTab-topology](./media/clip_image036b-2-singlesubscription.png)
+  ![networkTab-topology](./media/ActiveActive.png)
 
-  - **Deploy zone redundant or regional VPN Gateway** and **Deploy zone redundant or regional ExpressRoute Gateway**: Zone-redundant gateways are recommended and enabled by default (as per the capabilities of the Region you are deploying your hub virtual network) as they provide higher resiliency and availability. You might opt for a regional deployment depending on your availability requirements and budget. In this tutorial you will deploy a zone-redudant VPN Gateway:
+  - **Deploy zone redundant or regional VPN Gateway** and **Deploy zone redundant or regional ExpressRoute Gateway**: Zone-redundant gateways are recommended and enabled by default (as per the capabilities of the Region you are deploying your hub virtual network) as they provide higher resiliency and availability. You might opt for a regional deployment depending on your availability requirements and budget. In this tutorial you will deploy a zone-redundant VPN Gateway:
   
     Select **Zone redundant (recommended)**.
   
     ![networkTab-gwDeploy](./media/clip_image036b-3-singlesubscription.png)
+
+  - **Deploy VPN Gateway in Active/Active mode**:  You can create an Azure VPN gateway in an active-active configuration, where both instances of the gateway VMs establish S2S VPN tunnels to your on-premises VPN device.  In this configuration, each Azure gateway instance has a unique public IP address, and each will establish an IPsec/IKE S2S VPN tunnel to your on-premises VPN device specified in your local network gateway and connection. See [Active-active VPN gateways](https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-highlyavailable#active-active-vpn-gateways).
 
   - **Select the VPN Gateway SKU** and **Select the ExpressRoute Gateway VPN**: choose the right SKU based on your requirements (capabilities, throughput and availability). See [VPN Gateway SKUs](https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-gateway-settings#gwsku) and [ExpressRoute Gateway SKUs](https://learn.microsoft.com/en-us/azure/expressroute/expressroute-about-virtual-network-gateways#gwsku) for further details on the virtual gateway's SKUs you have available in Azure. In this tutorial you will deploy a VpnGw2AZ which provides an aggregated throughput of up to 1 Gbps:
   
@@ -202,7 +197,7 @@ On the *Network topology and connectivity* blade you will configure your core ne
 
   - **Select Availability Zones for the Azure Firewall**:
 
-    In this tutorial you will deploy a zone-redudant Azure Firewall.
+    In this tutorial you will deploy a zone-redundant Azure Firewall.
 
     **Select two or more zones** to configure your Azure Firewall deployment to span multiple [Availability Zones](https://learn.microsoft.com/en-us/azure/firewall/features#availability-zones) (recommended for increased availability).
 
@@ -217,6 +212,24 @@ On the *Network topology and connectivity* blade you will configure your core ne
   - **Subnet for Azure Firewall**: **provide an address space (/26 or larger)** to be assigned to the subnet dedicated to host your Azure Firewall instances.
 
   ![networkTab-fwSubnet](./media/clip_image036b-10-singlesubscription.png)
+
+### Deploying networking resources in a second region
+
+If you selected **Deploy in a secondary region** in the Core steps, you will also configure a secondary region for networking platform resource in this blade.  This secondary platform network deployment prepares you you to take advantage of capacity in multiple regions, and for recovery or multi-region high availability.
+
+The deployment will use the same deployment type as the primary region - either two hub and spokes with Azure firewall, two hub and spokes with your own-third party NVA, or an additional virtual WAN hub.
+
+![img](./media/clip_image080.png)
+
+You will need to specify the additional region to deploy to, and then you will be given the option to deploy and configure your gateways and (if applicable) your Azure firewall.
+
+![img](./media/clip_image081.png)
+
+For best results, use similar inputs to make sure that your regional deployments can both support the same architecture.  However, if you want to forgo deploying a gateway or firewall in the second region, you can select the appropriate options.
+
+Once deployed, your regional hubs will be peered together and have routing tables assigned to the firewall subnets to handle routing to each other.  You can add routes to this route table later, as you add spoke networks.  If you have deployed DDoS protection in the primary region, it will be applied to the secondary region as well.
+
+Your Private DNS zones will be deployed in a resource group linked to your primary region, and will be assigned to both regions.  See [Private Link and DNS integration at scale](https://learn.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/private-link-and-dns-integration-at-scale) for more information.
 
 Click **Next: Identity>** once you had configured your network setup.
 
@@ -240,31 +253,8 @@ Click **Next: Landing Zone configuration>** to continue with your deployment.
 
 ## 9. Landing zones configuration
 
-It is possible to bring in N number of existing subscriptions that will be bootstrapped as landing zones, governed by Azure Policy:
+In the top section you can **select** from a set of **recommended Azure policies** which ones you want to apply to secure and govern your Landing Zones. All landing zone Azure Policies are enabled by default (recommended) but are fully customizable.
 
-![lzTab-intro](./media/clip_image037-1-singlesubscription.jpg)
-
-- **Select the subscriptions you want to move to corp management group:**
-  Corp Landing Zones are meant to host workloads that require connectivity to other resources within the corporate network via the Hub in the Platform Subscription.
-
-For Corp Landing Zones its virtual network can be connected (recommended) to the hub virtual network using virtual network peering, enabling access to your corporate network. Please note you will need to provide a non-overlapping private IP address space to be assigned to each Landing Zone. See [Plan for IP Addressing](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/plan-for-ip-addressing) for further recommendations. Also, if you deployed and enabled Azure Firewall as DNS proxy, [DNS settings on these VNets will be configured](https://learn.microsoft.com/en-us/azure/firewall/dns-settings#configure-virtual-network-dns-servers) with the Azure Firewall private IP address.
-
-  In this tutorial, a "Corp" Landing Zone is provisioned using an existing (empty) subscription and connected to the Hub virtual network previously configured. Please note, additional subscriptions can be added.
-
-  Set **Connect corp landing zones to the connectivity hub (optional)** to **Yes**, then **select** an empty subscription (*corp-subscription*) and assign an address space:
-
-  ![lzTab-corpLZs](./media/clip_image037-2-singlesubscription.jpg)
-
-- **Select the subscriptions you want to move to online management group**:
-  Online Landing Zones are meant to host workloads that do not require connectivity/hybrid connectivity with the corporate network or that not even require a virtual network.
-
-  In this tutorial, an "Online" Landing Zone is provisioned using an existing (empty) subscription.
-
-  Select an empty subscription (*online-subscription*) from the ones available in the **Online landing zone subscription** drop down list. Please note, additional subscriptions can be added.
-
-  ![lzTab-onlineLZs](./media/clip_image037-3-singlesubscription.jpg)
-
-- Finally, you can **select** from a set of **recommended Azure policies** which ones you want to apply to secure and govern your Landing Zones. All landing zone Azure Policies are enabled by default (recommended) but are fully customizable.
 - **Please note:** Landing zone Azure Policies can be assigned at any time.
 
   Any Azure Policies you selected will be assigned to the [Landing Zones Management Group](./How-Enterprise-Scale-Works#enterprise-scale-management-group-structure) under the root of your Enterprise Scale Management Group hierarchy. See [landing zone Azure's Policies](https://github.com/Azure/Enterprise-Scale/blob/main/docs/ESLZ-Policies.md) for further details on the configurable set of Azure Policies.
@@ -275,16 +265,47 @@ For Corp Landing Zones its virtual network can be connected (recommended) to the
 
   ![lzTab-policies](./media/clip_image037-4-singlesubscription.jpg)
 
+In the bottom two sections you can choose to bring in N number of existing subscriptions that will be bootstrapped as landing zones, governed by Azure Policy:
+
+
+
+- **Select the subscriptions you want to move to corp management group:**
+  Corp Landing Zones are meant to host workloads that require connectivity to other resources within the corporate network via the Hub in the Platform Subscription.
+
+For Corp Landing Zones its virtual network can be connected (recommended) to the hub virtual network using virtual network peering, enabling access to your corporate network. Please note you will need to provide a non-overlapping private IP address space to be assigned to each Landing Zone. See [Plan for IP Addressing](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/plan-for-ip-addressing) for further recommendations. Also, if you deployed and enabled Azure Firewall as DNS proxy, [DNS settings on these VNets will be configured](https://learn.microsoft.com/en-us/azure/firewall/dns-settings#configure-virtual-network-dns-servers) with the Azure Firewall private IP address. In this section you can also select which Azure Policies you would like to enable for the corp management group specifically.
+
+  In this tutorial, a "Corp" Landing Zone is provisioned using an existing (empty) subscription and connected to the Hub virtual network previously configured. Please note, additional subscriptions can be added.
+
+  
+- **Select the subscriptions you want to move to online management group**:
+  Online Landing Zones are meant to host workloads that do not require connectivity/hybrid connectivity with the corporate network or that not even require a virtual network.
+
+  In this tutorial, an "Online" Landing Zone is provisioned using an existing (empty) subscription.
+
+  Select an empty subscription (*online-subscription*) from the ones available in the **Online landing zone subscription** drop down list. Please note, additional subscriptions can be added.
+
+  ![lzTab-onlineLZs](./media/clip_image037-3-singlesubscription.jpg)
+
+Click **Next: Decommissioned/Sandbox>** to continue with your deployment.
+
+![lzTab-next](./media/clip_image037-6-singlesubscription.jpg)
+
+## 10. Decommissioned/Sandbox
+
+You can optionally choose to change whether default policy assignments for Decommissioned and Sandbox management groups are enabled, set to audit only or disabled.
+
+![Decommissioned and Sandbox options](./media/alz-portal-decommsandbox.jpg)
+
 Click **Next: Review + Create>** to complete your deployment.
 
 ![lzTab-next](./media/clip_image037-5-singlesubscription.jpg)
 
-## 10. Review + create
+## 11. Review + create
 
 *Review + Create* page will validate your permission and configuration before you can click deploy. Once it has been validated successfully, you can click *Create*
 
 ![Graphical user interface, text, application, email  Description automatically generated](./media/clip_image039-singlesubscription.jpg)
 
-## 11. Post deployment activities
+## 12. Post deployment activities
 
 Once Azure landing zone portal accelerator deployment finishes, you can grant your application teams/business units access to their respective landing zones. Whenever there’s a need for a new landing zone, you can place them into their respective management groups (Online or Corp) given the characteristics of assumed workloads and their requirements.

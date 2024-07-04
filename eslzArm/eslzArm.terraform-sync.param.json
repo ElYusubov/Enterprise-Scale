@@ -1,0 +1,464 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "addressPrefix": {
+            "value": "10.100.0.0/16"
+        },
+        "addressPrefixSecondary": {
+            "value": "10.200.0.0/16"
+        },
+        "auditAppGwWaf": {
+            "value": "Yes"
+        },
+        "auditPeDnsZones": {
+            "value": "Yes"
+        },
+        "connectivitySubscriptionId": {
+            "value": "00000000-0000-0000-0000-000000000000"
+        },
+        "delayCount": {
+            "value": 45
+        },
+        "denyAksPrivileged": {
+            "value": "Yes"
+        },
+        "denyAksPrivilegedEscalation": {
+            "value": "Yes"
+        },
+        "denyClassicResources": {
+            "value": "Yes"
+        },
+        "denyHttpIngressForAks": {
+            "value": "Yes"
+        },
+        "denyHybridNetworking": {
+            "value": "Yes"
+        },
+        "denyIpForwarding": {
+            "value": "Yes"
+        },
+        "denyMgmtPorts": {
+            "value": "Yes"
+        },
+        "denyMgmtPortsForIdentity": {
+            "value": "Yes"
+        },
+        "denyPipForIdentity": {
+            "value": "Yes"
+        },
+        "denyPipOnNicForCorp": {
+            "value": "Yes"
+        },
+        "denyPublicEndpoints": {
+            "value": "Yes"
+        },
+        "denySubnetWithoutNsg": {
+            "value": "Yes"
+        },
+        "denySubnetWithoutNsgForIdentity": {
+            "value": "Yes"
+        },
+        "denyVMUnmanagedDisk": {
+            "value": "Yes"
+        },
+        "emailContactAsc": {
+            "value": "test.user@replace.me"
+        },
+        "enableAgentHealth": {
+            "value": "Yes"
+        },
+        "enableAksPolicy": {
+            "value": "Yes"
+        },
+        "enableAsc": {
+            "value": "Yes"
+        },
+        "enableAscForApis": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForAppServices": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForArm": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForContainers": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForCosmosDbs": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForCspm": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForDns": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForKeyVault": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForOssDb": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForServers": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForServersVulnerabilityAssessments": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForSql": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForSqlOnVm": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAscForStorage": {
+            "value": "DeployIfNotExists"
+        },
+        "enableAzFw": {
+            "value": "No"
+        },
+        "enableAzFwDnsProxy": {
+            "value": "No"
+        },
+        "enableAzFwDnsProxySecondary": {
+            "value": "No"
+        },
+        "enableAzFwSecondary": {
+            "value": "No"
+        },
+        "enableChangeTracking": {
+            "value": "Yes"
+        },
+        "enableDdoS": {
+            "value": "Yes"
+        },
+        "enableDecommissioned": {
+            "value": "Yes"
+        },
+        "enableEncryptionInTransit": {
+            "value": "Yes"
+        },
+        "enableErGw": {
+            "value": "No"
+        },
+        "enableErGwSecondary": {
+            "value": "No"
+        },
+        "enableHub": {
+            "value": "vhub"
+        },
+        "enableHubSecondary": {
+            "value": "vhub"
+        },
+        "enableLogAnalytics": {
+            "value": "Yes"
+        },
+        "enableLzDdoS": {
+            "value": "Yes"
+        },
+        "enableMDEndpoints": {
+            "value": "DeployIfNotExists"
+        },
+        "enableMonitorBaselines": {
+            "value": "No"
+        },
+        "enablePrivateDnsZones": {
+            "value": "Yes"
+        },
+        "enablePrivateDnsZonesSecondary": {
+            "value": "No"
+        },
+        "enablePrivateDnsZonesForLzs": {
+            "value": "Yes"
+        },
+        "enableSandbox": {
+            "value": "Yes"
+        },
+        "enableSecondaryRegion": {
+            "value": "Yes"
+        },
+        "enableSecuritySolution": {
+            "value": "Yes"
+        },
+        "enableSqlAdvancedThreatProtection": {
+            "value": "Yes"
+        },
+        "enableSqlAssessment": {
+            "value": "Yes"
+        },
+        "enableSqlAudit": {
+            "value": "Yes"
+        },
+        "enableSqlEncryption": {
+            "value": "Yes"
+        },
+        "enableSqlThreat": {
+            "value": "Yes"
+        },
+        "enableSqlVulnerabilityAssessment": {
+            "value": "Yes"
+        },
+        "enableStorageHttps": {
+            "value": "Yes"
+        },
+        "enableUpdateMgmt": {
+            "value": "Yes"
+        },
+        "enableVmBackup": {
+            "value": "Yes"
+        },
+        "enableVmBackupForIdentity": {
+            "value": "Yes"
+        },
+        "enableVmHybridMonitoring": {
+            "value": "Yes"
+        },
+        "enableVmInsights": {
+            "value": "Yes"
+        },
+        "enableVmMonitoring": {
+            "value": "Yes"
+        },
+        "enableVmssMonitoring": {
+            "value": "Yes"
+        },
+        "enableVpnActiveActive": {
+            "value": "No"
+        },
+        "enableVpnActiveActiveSecondary": {
+            "value": "No"
+        },
+        "enableVpnGw": {
+            "value": "No"
+        },
+        "enableVpnGwSecondary": {
+            "value": "No"
+        },
+        "enablevWANRoutingIntent": {
+            "value": "No"
+        },
+        "enablevWANRoutingIntentSecondary": {
+            "value": "No"
+        },
+        "enableWsAPIMInitiatives": {
+            "value": "No"
+        },
+        "enableWsAppServicesInitiatives": {
+            "value": "No"
+        },
+        "enableWsAutomationInitiatives": {
+            "value": "No"
+        },
+        "enableWsCMKInitiatives": {
+            "value": "No"
+        },
+        "enableWsCognitiveServicesInitiatives": {
+            "value": "No"
+        },
+        "enableWsComputeInitiatives": {
+            "value": "No"
+        },
+        "enableWsContainerAppsInitiatives": {
+            "value": "No"
+        },
+        "enableWsContainerInstanceInitiatives": {
+            "value": "No"
+        },
+        "enableWsContainerRegistryInitiatives": {
+            "value": "No"
+        },
+        "enableWsCosmosDbInitiatives": {
+            "value": "No"
+        },
+        "enableWsDataExplorerInitiatives": {
+            "value": "No"
+        },
+        "enableWsDataFactoryInitiatives": {
+            "value": "No"
+        },
+        "enableWsEventGridInitiatives": {
+            "value": "No"
+        },
+        "enableWsEventHubInitiatives": {
+            "value": "No"
+        },
+        "enableWsKeyVaultSupInitiatives": {
+            "value": "No"
+        },
+        "enableWsKubernetesInitiatives": {
+            "value": "No"
+        },
+        "enableWsMachineLearningInitiatives": {
+            "value": "No"
+        },
+        "enableWsMySQLInitiatives": {
+            "value": "No"
+        },
+        "enableWsNetworkInitiatives": {
+            "value": "No"
+        },
+        "enableWsOpenAIInitiatives": {
+            "value": "No"
+        },
+        "enableWsPostgreSQLInitiatives": {
+            "value": "No"
+        },
+        "enableWsServiceBusInitiatives": {
+            "value": "No"
+        },
+        "enableWsSQLInitiatives": {
+            "value": "No"
+        },
+        "enableWsStorageInitiatives": {
+            "value": "No"
+        },
+        "enableWsSynapseInitiatives": {
+            "value": "No"
+        },
+        "enableWsVirtualDesktopInitiatives": {
+            "value": "No"
+        },
+        "enforceAcsb": {
+            "value": "Yes"
+        },
+        "enforceBackup": {
+            "value": "Yes"
+        },
+        "enforceBackupPlat": {
+            "value": "Yes"
+        },
+        "enforceKvGuardrails": {
+            "value": "Yes"
+        },
+        "enforceKvGuardrailsPlat": {
+            "value": "Yes"
+        },
+        "enterpriseScaleCompanyPrefix": {
+            "value": "defaults"
+        },
+        "erAzSku": {
+            "value": ""
+        },
+        "erAzSkuSecondary": {
+            "value": ""
+        },
+        "erRegionalOrAz": {
+            "value": ""
+        },
+        "erRegionalOrAzSecondary": {
+            "value": ""
+        },
+        "erRegionalSku": {
+            "value": ""
+        },
+        "erRegionalSkuSecondary": {
+            "value": ""
+        },
+        "expressRouteScaleUnit": {
+            "value": "1"
+        },
+        "expressRouteScaleUnitSecondary": {
+            "value": "1"
+        },
+        "firewallSku": {
+            "value": "Standard"
+        },
+        "firewallSkuSecondary": {
+            "value": "Standard"
+        },
+        "firewallZones": {
+            "value": []
+        },
+        "firewallZonesSecondary": {
+            "value": []
+        },
+        "gwAzSku": {
+            "value": ""
+        },
+        "gwAzSkuSecondary": {
+            "value": ""
+        },
+        "gwRegionalOrAz": {
+            "value": ""
+        },
+        "gwRegionalOrAzSecondary": {
+            "value": ""
+        },
+        "gwRegionalSku": {
+            "value": ""
+        },
+        "gwRegionalSkuSecondary": {
+            "value": ""
+        },
+        "identityAddressPrefix": {
+            "value": "10.110.0.0/24"
+        },
+        "identityAddressPrefixSecondary": {
+            "value": "10.210.0.0/24"
+        },
+        "identitySubscriptionId": {
+            "value": "00000000-0000-0000-0000-000000000000"
+        },
+        "internetTrafficRoutingPolicy": {
+            "value": false
+        },
+        "internetTrafficRoutingPolicySecondary": {
+            "value": false
+        },
+        "listOfResourceTypesDisallowedForDeletion": {
+            "value": [
+                "microsoft.managedidentity/userassignedidentities"
+            ]
+        },
+        "managementSubscriptionId": {
+            "value": "00000000-0000-0000-0000-000000000000"
+        },
+        "monitorAlertsResourceGroup": {
+            "value": ""
+        },
+        "retentionInDays": {
+            "value": "30"
+        },
+        "subnetMaskForAzFw": {
+            "value": ""
+        },
+        "subnetMaskForAzFwMgmt": {
+            "value": ""
+        },
+        "subnetMaskForAzFwMgmtSecondary": {
+            "value": ""
+        },
+        "subnetMaskForAzFwSecondary": {
+            "value": ""
+        },
+        "subnetMaskForGw": {
+            "value": ""
+        },
+        "subnetMaskForGwSecondary": {
+            "value": ""
+        },
+        "telemetryOptOut": {
+            "value": "Yes"
+        },
+        "vpnGateWayScaleUnit": {
+            "value": "1"
+        },
+        "vpnGateWayScaleUnitSecondary": {
+            "value": "1"
+        },
+        "vWANHubCapacity": {
+            "value": "2"
+        },
+        "vWANHubCapacitySecondary": {
+            "value": "2"
+        },
+        "vWANHubRoutingPreference": {
+            "value": "ExpressRoute"
+        },
+        "vWANHubRoutingPreferenceSecondary": {
+            "value": "ExpressRoute"
+        }
+    }
+}
